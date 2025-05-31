@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Курс Веб Анімації</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+  <header class="main-header">
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#про-курс">Про курс</a></li>
+        <li><a href="#програма">Програма</a></li>
+        <li><a href="#записатися">Записатися</a></li>
+      </ul>
+      <button class="theme-toggle" aria-label="Перемкнути тему">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
+          <rect class="theme-bg" x="0" y="0" width="100" height="100" rx="20" />
+          <path class="theme-icon" d="M30 30 L50 20 L70 30 L70 65 C70 70 60 75 50 75 C40 75 30 70 30 65 Z" />
+          <path class="theme-icon" d="M40 40 L40 55 L60 55 L60 40 M40 40 L60 40" stroke-width="5" stroke="currentColor" fill="none" />
+          <circle class="theme-icon" cx="50" cy="65" r="5" />
+        </svg>
+      </button>
+    </nav>
+  </header>
+  
+  <section class="hero">
+    <div class="animated-text">
+      <h1>
+        <span class="line line-1">ВЕБ</span>
+        <span class="line line-2">АНІМАЦІЯ</span>
+      </h1>
+    </div>
+  </section>
+  <script src="js/theme-toggle.js"></script>
+  <script src="js/particles.js"></script>
+  <div class="theme-transition-overlay">
+    <svg class="theme-wave" viewBox="0 0 1440 800" preserveAspectRatio="none">
+      <path class="wave" d="M0,800 C450,800 950,400 1440,800 L1440,0 C950,0 450,0 0,0 Z"></path>
+    </svg>
+  </div>
+</body>
+</html>
