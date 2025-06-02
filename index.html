@@ -12,10 +12,16 @@
 <body>
   <header class="main-header">
     <nav class="main-nav">
-      <ul>
-        <li><a href="#про-курс">Про курс</a></li>
-        <li><a href="#програма">Програма</a></li>
-        <li><a href="#записатися">Записатися</a></li>
+      <button class="mobile-menu-toggle" aria-label="Відкрити меню">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      
+      <ul class="menu-items">
+        <li><a href="#about">Про курс</a></li>
+        <li><a href="#program">Програма</a></li>
+        <li><a href="#register">Записатися</a></li>
       </ul>
       <button class="theme-toggle" aria-label="Перемкнути тему">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
@@ -28,16 +34,76 @@
     </nav>
   </header>
   
-  <section class="hero">
-    <div class="animated-text">
-      <h1>
-        <span class="line line-1">ВЕБ</span>
-        <span class="line line-2">АНІМАЦІЯ</span>
-      </h1>
-    </div>
-  </section>
+  <main>
+    <section id="hero" class="hero section">
+      <div class="animated-text">
+        <h1>
+          <div class="text-container">
+            <span class="line line-1">ВЕБ</span>
+          </div>
+          <div class="text-container">
+            <span class="line line-2">АНІМАЦІЯ</span>
+          </div>
+        </h1>
+      </div>
+    </section>
+    
+    <section id="about" class="section">
+      <div class="section-content">
+        <h2>Про курс</h2>
+        <p>Курс Веб Анімації призначений для розробників, які хочуть поліпшити свої навички в створенні сучасних анімацій для веб-інтерфейсів. Ви вивчите різні техніки анімацій від простих CSS ефектів до складних анімацій з використанням Canvas та WebGL.</p>
+      </div>
+    </section>
+    
+    <section id="program" class="section">
+      <div class="section-content">
+        <h2>Програма</h2>
+        <div class="program-list">
+          <div class="program-item">
+            <h3>Модуль 1: Основи CSS Анімацій</h3>
+            <p>Трансформації, переходи та анімації в CSS</p>
+          </div>
+          <div class="program-item">
+            <h3>Модуль 2: Робота з SVG</h3>
+            <p>Створення та анімація SVG елементів</p>
+          </div>
+          <div class="program-item">
+            <h3>Модуль 3: JavaScript Анімації</h3>
+            <p>GSAP, Anime.js та інші бібліотеки для анімацій</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="register" class="section">
+      <div class="section-content">
+        <h2>Записатися</h2>
+        <form class="registration-form">
+          <div class="form-group">
+            <label for="name">Ваше ім'я</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="level">Рівень підготовки</label>
+            <select id="level" name="level">
+              <option value="beginner">Початківець</option>
+              <option value="intermediate">Середній</option>
+              <option value="advanced">Досвідчений</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit">Записатися</button>
+        </form>
+      </div>
+    </section>
+  </main>
   <script src="js/theme-toggle.js"></script>
   <script src="js/particles.js"></script>
+  <script src="js/mobile-menu.js"></script>
+  <script src="js/scroll-animations.js"></script>
   <div class="theme-transition-overlay">
     <svg class="theme-wave" viewBox="0 0 1440 800" preserveAspectRatio="none">
       <path class="wave" d="M0,800 C450,800 950,400 1440,800 L1440,0 C950,0 450,0 0,0 Z"></path>

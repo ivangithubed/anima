@@ -38,6 +38,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth; /* Додаємо плавне прокручування */
+}
+
 body {
   font-family: 'e-Ukraine', 'Arial', sans-serif;
   background-color: var(--bg-color);
@@ -46,6 +50,11 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+}
+
+/* Блокування прокрутки при відкритому меню */
+body.menu-open {
+  overflow: hidden;
 }
 
 /* Повноекранна секція */
@@ -102,6 +111,53 @@ h1 {
   animation: fadeInUp 1.5s ease forwards 1.2s;
 }
 
+/* Загальні стилі для секцій */
+.section {
+  min-height: 100vh;
+  padding: 7rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-margin-top: 5rem; /* Додаємо відступ зверху при прокручуванні */
+}
+
+/* Основні стилі для вмісту секцій */
+.section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(-100px); /* Контент починає рух зліва */
+  will-change: transform, opacity;
+}
+
+/* Особливі стилі для першої секції, щоб вона була видима одразу */
+#hero .section-content {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Стилі для заголовків секцій */
+.section h2 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  display: inline-block;
+}
+
+.section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background-color: var(--accent-color);
+}
+
 /* Стилі для навігаційного меню */
 .main-header {
   position: fixed;
@@ -122,17 +178,27 @@ h1 {
   box-shadow: 0 2px 10px rgba(var(--accent-color-rgb), 0.25);
 }
 
-.main-nav ul {
+/* Логотип в навігації */
+/* .logo {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+} */
+
+/* Стилі меню */
+.menu-items {
   display: flex;
   justify-content: center;
   list-style: none;
   margin: 0;
-  flex-wrap: wrap; /* Дозволяємо перенос на малих екранах */
   padding: 0;
+  flex-wrap: wrap; /* Дозволяємо перенос на малих екранах */
 }
 
 .main-nav li {
-  margin: 0 2rem;
+  margin: 0 1.5rem;
   opacity: 0;
   transform: translateY(-10px);
   padding: 0.5rem 0;
@@ -179,6 +245,177 @@ h1 {
 
 .main-nav a:hover::after {
   width: 100%;
+}
+
+/* Стилі для активного пункту меню */
+.main-nav a.active {
+  color: var(--accent-color);
+}
+
+.main-nav a.active::after {
+  width: 100%;
+}
+
+/* Кнопка мобільного меню */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 102;
+}
+
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  background-color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+/* Медіа-запити для адаптивного меню */
+@media screen and (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .menu-items {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: var(--bg-color);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 101;
+  }
+  
+  .menu-items.active {
+    transform: translateX(0);
+  }
+  
+  .main-nav li {
+    margin: 1.5rem 0;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Коли меню відкрите, змінюємо вигляд кнопки на хрестик */
+  .mobile-menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  
+  .mobile-menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .mobile-menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+/* Стилі для програми курсу */
+.program-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.program-item {
+  background-color: rgba(var(--accent-color-rgb), 0.1);
+  border-left: 4px solid var(--accent-color);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.program-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.program-item h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--accent-color);
+  font-size: 1.3rem;
+}
+
+.program-item p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Стилі для форми реєстрації */
+.registration-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: rgba(var(--accent-color-rgb), 0.05);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'e-Ukraine', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--accent-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.btn-submit {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: 'e-Ukraine', sans-serif;
+}
+
+.btn-submit:hover {
+  background-color: rgba(var(--accent-color-rgb), 0.8);
+  transform: translateY(-2px);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
 }
 
 /* Анімація появи навігаційного меню */
@@ -237,10 +474,21 @@ h1 {
 }
 
 /* Додаткові ефекти для тексту */
+/* Стилі для контейнера тексту */
+.text-container {
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+.line {
+  display: inline-block;
+  position: relative;
+}
+
 .line::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -5px;
   left: 0;
   width: 0;
   height: 5px;
@@ -254,7 +502,7 @@ h1 {
     width: 0;
   }
   100% {
-    width: 100%;
+    width: 100%; /* Ширина тепер буде відносно ширини тексту */
   }
 }
 
