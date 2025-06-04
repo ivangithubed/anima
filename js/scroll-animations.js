@@ -58,13 +58,24 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         // Плавно прокручуємо до секції
         window.scrollTo({
-          top: targetSection.offsetTop - 80,
+          top: targetSection.offsetTop - 80, // Враховуємо висоту фіксованого хедера
           behavior: 'smooth'
         });
-        
-        // Оновлюємо активний пункт меню
-        menuLinks.forEach(menuLink => menuLink.classList.remove('active'));
-        this.classList.add('active');
+
+        // Невеликий трюк: оскільки 'scroll' подія може бути непередбачуваною на мобільних,
+        // і 'smooth' scroll не має колбека, ми оновимо активний пункт через короткий таймаут.
+        // Це дасть час прокрутці завершитися, і потім updateActiveMenuItem встановить правильний активний стан.
+        setTimeout(() => {
+          updateActiveMenuItem();
+          // Також, якщо мобільне меню було відкрите, закриємо його
+          const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+          const menuItems = document.querySelector('.menu-items');
+          if (mobileMenuToggle && menuItems && menuItems.classList.contains('active')) {
+            mobileMenuToggle.classList.remove('active');
+            menuItems.classList.remove('active');
+            document.body.classList.remove('menu-open');
+          }
+        }, 700); // Час підбирається експериментально, залежно від тривалості анімації прокрутки
       }
     });
   });
@@ -74,25 +85,53 @@ document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('.section');
     const navLinks = document.querySelectorAll('.main-nav a[href^="#"]');
     const navHeight = document.querySelector('.main-header').offsetHeight;
-    let current = '';
-    
+    let current = ''; // Зберігає ID поточної секції
+
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-      
+      // const sectionHeight = section.offsetHeight; // Не використовується в поточній логіці
+    
+      // Вважаємо секцію активною, якщо її верхня межа знаходиться в певному діапазоні від верхньої межі вікна перегляду
+      // Зміщення -100 допомагає зробити посилання активним трохи раніше, ніж секція досягне верху
       if (window.pageYOffset >= (sectionTop - navHeight - 100)) {
         current = section.getAttribute('id');
       }
     });
-    
+
+    // Нам не потрібно визначати колір теми вручну, тому що ми будемо використовувати CSS класи
+
     navLinks.forEach(link => {
-      link.classList.remove('active');
+      // Перевіряємо, чи href посилання відповідає ID поточної секції
       if (link.getAttribute('href') === `#${current}`) {
-        link.classList.add('active');
-      }
+        // Це посилання має бути активним
+        link.classList.add('active'); // Додаємо клас для стилю активного елементу
+        link.classList.remove('underline-instant-hide'); // Видаляємо клас для плавної появи
+        
+        // Застосовуємо стилі для видимості одразу, щоб анімація появи спрацювала
+        link.style.setProperty('--underline-scale', '1');
+        link.style.setProperty('--underline-opacity', '1');
+        link.style.setProperty('--underline-visibility', 'visible');
+        
+        // Видаляємо будь-які інлайнові стилі
+        link.style.removeProperty('color');
+      } else {
+        // Це посилання не має бути активним
+        link.classList.remove('active');
+        link.classList.add('underline-instant-hide'); // Додаємо клас для миттєвого зникнення
+      
+        // Даємо браузеру обробити додавання класу перед зміною CSS змінних
+        requestAnimationFrame(() => {
+          link.style.setProperty('--underline-scale', '0');
+          link.style.setProperty('--underline-opacity', '0');
+          link.style.setProperty('--underline-visibility', 'hidden');
+        });
+        
+        // Видаляємо інлайнові стилі, щоб використовувався колір тескту з CSS
+        link.style.removeProperty('color');
+      }  
     });
   }
-  
+
   // Викликаємо функцію оновлення меню при прокручуванні
   window.addEventListener('scroll', updateActiveMenuItem);
   

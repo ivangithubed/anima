@@ -216,45 +216,74 @@ h1 {
   animation: fadeInDown 0.5s ease forwards 3.3s;
 }
 
-.main-nav a {
+.main-nav ul li a {
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--text-color); /* Стандартний колір посилання */
   font-size: 1.2rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   position: relative;
   padding: 0.5rem 0;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease; /* Додамо transition для background-color на всякий випадок */
 }
 
-.main-nav a::after {
+/* Стилі для неактивних пунктів меню (не активний і не :hover) */
+.main-nav ul li a:not(.active):not(:hover) {
+  color: var(--text-color); /* Використовуємо колір тексту з теми */
+}
+
+.main-nav ul li a {
+  position: relative; /* Потрібно для позиціонування ::after */
+  --underline-scale: 0;
+  --underline-opacity: 0;
+  --underline-visibility: hidden;
+  /* Видаляємо --underline-transition-duration та --underline-transition-props, вони більше не потрібні тут */
+}
+
+.main-nav ul li a::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 2px;
   background-color: var(--accent-color);
-  transition: width 0.3s ease;
+  transform: scaleX(var(--underline-scale));
+  opacity: var(--underline-opacity);
+  visibility: var(--underline-visibility);
+  transform-origin: left;
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Стандартний перехід для появи */
 }
 
-.main-nav a:hover {
+.main-nav ul li a.underline-instant-hide::after {
+  transition: none !important; /* Примусово вимикаємо анімацію для цього класу */
+}
+
+/* Коментар про базовий стиль залишається актуальним */
+
+.main-nav ul li a:hover {
   color: var(--accent-color);
 }
 
-.main-nav a:hover::after {
-  width: 100%;
+.main-nav ul li a:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
+  visibility: visible;
+  /* Окремий transition для hover, щоб він завжди був анімованим, 
+     незалежно від --underline-transition-duration, встановленого JS */
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+/* Правило для .js-underline-active::after більше не потрібне, 
+   оскільки підкресленням активного стану тепер керує --underline-scale */
 
 /* Стилі для активного пункту меню */
-.main-nav a.active {
+.main-nav ul li a.active {
   color: var(--accent-color);
 }
 
-.main-nav a.active::after {
-  width: 100%;
-}
+/* Правило для .active::after тепер об'єднане з :hover::after */
 
 /* Кнопка мобільного меню */
 .mobile-menu-toggle {
@@ -277,8 +306,14 @@ h1 {
 
 /* Медіа-запити для адаптивного меню */
 @media screen and (max-width: 768px) {
+  .main-nav {
+    /* Дозволяємо кнопці бути справа, а лого/назві зліва, якщо є */
+    justify-content: flex-end; 
+  }
+
   .mobile-menu-toggle {
     display: block;
+    position: relative; /* Для z-index */
   }
   
   .menu-items {
@@ -294,10 +329,14 @@ h1 {
     transform: translateX(100%);
     transition: transform 0.3s ease;
     z-index: 101;
+    /* Додамо трохи відступу, щоб текст не прилипав до країв */
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
   .menu-items.active {
     transform: translateX(0);
+    padding-top: 5rem; /* Додаємо відступ зверху для пунктів меню */
   }
   
   .main-nav li {
